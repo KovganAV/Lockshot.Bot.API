@@ -1,0 +1,6 @@
+@Lockshot.Bot.API_HostAddress = http://localhost:5028
+
+GET {{Lockshot.Bot.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
