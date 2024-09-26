@@ -23,11 +23,12 @@ builder.Services.AddCors(options =>
 });
 
 
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IChatBotService>(provider =>
 {
-    var apiKey = "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";
+    var apiKey = "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";
     return new HuggingFaceService(apiKey);
 });
 

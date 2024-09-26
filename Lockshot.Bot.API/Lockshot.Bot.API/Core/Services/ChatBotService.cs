@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Lockshot.Bot.API.Data.Interfaces;
 using Lockshot.Bot.API.Data.Services;
+using Lockshot.Bot.API;
 
 
 namespace Lockshot.Bot.API.Core.Services

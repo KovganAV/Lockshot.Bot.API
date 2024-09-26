@@ -1,6 +1,6 @@
-@Lockshot.Bot.API_HostAddress = http://localhost:5028
-
-GET {{Lockshot.Bot.API_HostAddress}}/weatherforecast/
+POST http://localhost:5028/api/ChatBot/chat
+Content-Type: application/json
 Accept: application/json
 
-###
+httpClient.Timeout = TimeSpan.FromMinutes(5);  // Set a larger timeout
+
