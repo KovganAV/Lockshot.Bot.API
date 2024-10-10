@@ -29,7 +29,7 @@ namespace Lockshot.Bot.API.Core.Services
                 string accumulatedResponse = string.Empty;
                 string currentInput = userMessage;
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 30; i++)
                 {
                     var requestData = new
                     {
