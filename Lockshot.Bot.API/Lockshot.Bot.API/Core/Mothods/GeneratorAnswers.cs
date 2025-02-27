@@ -15,7 +15,7 @@ namespace Lockshot.Bot.API.Core.Mothods
 
         private const string MistralModel = "mistralai/Mistral-Nemo-Instruct-2407";
         private const string ZephyrModel = "HuggingFaceH4/zephyr-7b-alpha";
-
+        
 
         public GeneratorAnswers(IHuggingFaceRefit huggingFaceRefit)
         {
@@ -23,72 +23,12 @@ namespace Lockshot.Bot.API.Core.Mothods
 
         }
 
-        public delegate Task<string> GetAnswer(BotRequest request);
-
-        public async Task<string> PhiGeneration(BotRequest request)
-        {
-
-            try
-            {
-
-                var message = request.Message;
-
-                var result = "";
-                var genText = "";
-
-                var poss = 0;
-
-                for (int i = 0; i < 7; i++)
-                {
-
-                    var jsonContent = PhiFormater.GeneratePromt(i, message, genText);
-
-                    var response = await _huggingFaceRefit.PostQuestion(jsonContent, "microsoft/Phi-3-mini-4k-instruct");
-
-                    if (response.IsSuccessStatusCode)
-                    {
-
-                        var currentResponse = await PhiFormater.GetStringResponse(response, poss);
-
-
-                        poss = currentResponse.Length;
-
-                        result = currentResponse;
-
-                        genText = currentResponse;
-
-                        if (currentResponse.Length < 100)
-                        {
-                            break;
-                        }
-
-                    }
-                    else
-                    {
-
-                        return "Error: " + response.ReasonPhrase;
-
-                    }
-
-
-                }
-
-                return "<br>" + result + "</br>";
-
-            }
-            catch (Exception ex)
-            {
-
-                return ex.Message;
-            }
-
-        }
         public async Task<string> MistralGeneration(BotRequest request)
         {
             string accumulatedResponse = string.Empty;
             string currentInput = request.Message;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var requestData = new
                 {
@@ -171,55 +111,6 @@ namespace Lockshot.Bot.API.Core.Mothods
             }
 
             return result;
-        }
-        public async Task<string> ZephyrGeneration(BotRequest request)
-        {
-            string accumulatedResponse = string.Empty;
-            string currentInput = request.Message;
-
-            for (int i = 0; i < 2; i++)
-            {
-                var requestData = new
-                {
-                    inputs = currentInput,
-                    parameters = new
-                    {
-                        max_length = 1000,
-                        temperature = 0.7
-                    }
-                };
-
-                var response = await _huggingFaceRefit.PostQuestion(requestData, ZephyrModel);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Error calling API: {response.StatusCode}, Error content: {errorContent}");
-                    throw new HttpRequestException($"Error calling API: {response.StatusCode}, Error content: {errorContent}");
-                }
-
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"API response: {jsonResponse}");
-
-                using (JsonDocument document = JsonDocument.Parse(jsonResponse))
-                {
-                    if (document.RootElement.ValueKind == JsonValueKind.Array && document.RootElement.GetArrayLength() > 0)
-                    {
-                        var firstElement = document.RootElement[0];
-                        if (firstElement.TryGetProperty("generated_text", out JsonElement generatedTextElement))
-                        {
-                            var generatedText = generatedTextElement.GetString();
-                            accumulatedResponse += generatedText;
-                            currentInput = generatedText;
-                        }
-                    }
-                }
-            }
-
-            var formattedResponse = FormatResponse(accumulatedResponse);
-            formattedResponse = RemoveFirstTwoSentencesZephyr(formattedResponse);
-
-            return formattedResponse;
         }
     }
 }

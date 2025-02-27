@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "WebApi",
         policy =>
         {
-            policy.WithOrigins("http://192.168.17.57:7100", "http://192.168.17.57:5290", "http://localhost:5290")
+            policy.WithOrigins("http://localhost:5173", "https://localhost:7044")
             .AllowAnyHeader()
             .AllowAnyMethod();
         });
