@@ -9,8 +9,6 @@ namespace Lockshot.Bot.Models.Response
     public class BotResponse
     {
 
-        public BotType BotType { get; set; }
-
         public string? Answer { get; set; }
 
     }
