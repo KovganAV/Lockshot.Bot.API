@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Lockshot.Bot.API.Core.Interfaces;
 using Lockshot.Bot.API.Settings;
 using System.Net.Http.Headers;
 using Refit; 

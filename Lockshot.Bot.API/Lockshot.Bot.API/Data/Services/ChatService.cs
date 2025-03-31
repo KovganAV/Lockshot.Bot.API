@@ -12,8 +12,7 @@ namespace Lockshot.Bot.API.Data.Services
             {
                 _chatBotService = chatBotService;
             }
-
-            public async Task<string> GenerateResponseAsync(string input)
+        public async Task<string> GenerateResponseAsync(string input)
             {
                 var response = await _chatBotService.GenerateTextAsync(input);
                 if (string.IsNullOrEmpty(response))
